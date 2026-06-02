@@ -286,3 +286,23 @@ if __name__ == "__main__":
             f.write(f"{feat}\n")
     
     logger.info(f"Feature list saved with {len(feature_list)} features")
+
+    # Add this function to calculate WoE and IV
+def calculate_woe_iv(df, feature, target):
+    """Calculate Weight of Evidence and Information Value"""
+    # Group by feature bins
+    grouped = df.groupby(feature)[target].agg(['count', 'sum'])
+    grouped.columns = ['total', 'events']
+    grouped['non_events'] = grouped['total'] - grouped['events']
+    
+    # Calculate distribution
+    grouped['event_pct'] = grouped['events'] / grouped['events'].sum()
+    grouped['non_event_pct'] = grouped['non_events'] / grouped['non_events'].sum()
+    
+    # Calculate WoE
+    grouped['woe'] = np.log(grouped['event_pct'] / grouped['non_event_pct'])
+    
+    # Calculate IV
+    grouped['iv'] = (grouped['event_pct'] - grouped['non_event_pct']) * grouped['woe']
+    
+    return grouped, grouped['iv'].sum()

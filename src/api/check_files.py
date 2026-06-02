@@ -1,31 +1,45 @@
 import os
 from pathlib import Path
 
-print("Checking project structure...")
-print(f"Current directory: {os.getcwd()}")
+print("="*60)
+print("FILE LOCATION DIAGNOSTIC")
+print("="*60)
 
-# Check for required directories
-required_dirs = ['data/raw', 'data/processed', 'artifacts', 'src']
-for dir_name in required_dirs:
-    path = Path(dir_name)
+# Check all possible locations
+locations_to_check = [
+    "C:/Users/hp/Desktop/credit_risk_data/data/processed/",
+    "C:/Users/hp/credit-risk-model/data/processed/",
+    "C:/Users/hp/Desktop/credit_risk_data/",
+    "C:/Users/hp/credit-risk-model/data/",
+]
+
+print("\n📁 Checking for processed files:\n")
+
+for location in locations_to_check:
+    path = Path(location)
     if path.exists():
-        print(f"✓ {dir_name} exists")
+        print(f"✓ Directory exists: {location}")
+        print(f"  Files found:")
+        for file in path.glob("*.csv"):
+            print(f"    - {file.name} ({file.stat().st_size} bytes)")
+        print()
     else:
-        print(f"✗ {dir_name} missing - creating...")
-        path.mkdir(parents=True, exist_ok=True)
+        print(f"✗ Directory does not exist: {location}")
+        print()
 
-# Check for data file
-data_file = Path('data/raw/data.csv')
-if data_file.exists():
-    print(f"✓ Data file found: {data_file}")
-else:
-    print(f"✗ Data file missing! Please place data.csv in data/raw/")
+# Specifically check for final_training_data.csv
+print("="*60)
+print("CHECKING FOR final_training_data.csv")
+print("="*60)
 
-# Check for processed files
-processed_files = ['processed_customers.csv', 'final_training_data.csv']
-for file in processed_files:
-    path = Path(f'data/processed/{file}')
-    if path.exists():
-        print(f"✓ {file} exists")
+possible_full_paths = [
+    "C:/Users/hp/Desktop/credit_risk_data/data/processed/final_training_data.csv",
+    "C:/Users/hp/credit-risk-model/data/processed/final_training_data.csv",
+    "C:/Users/hp/Desktop/credit_risk_data/final_training_data.csv",
+]
+
+for path in possible_full_paths:
+    if Path(path).exists():
+        print(f"✓ FOUND: {path}")
     else:
-        print(f"✗ {file} missing")
+        print(f"✗ NOT FOUND: {path}")
