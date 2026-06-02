@@ -1,0 +1,25 @@
+pandas
+numpy
+scikit-learn
+
+# Model tracking
+mlflow
+
+# API and deployment
+fastapi
+uvicorn
+pydantic
+python-multipart
+
+# Visualization
+matplotlib
+seaborn
+
+# Testing
+pytest
+pytest-cov
+
+# Utilities
+joblib
+python-dotenv
+ 
